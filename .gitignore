@@ -5,6 +5,7 @@ dist
 coverage
 *.db
 *.db-journal
+*.tsbuildinfo
 .env
 .env.*
 .DS_Store
