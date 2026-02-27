@@ -1,0 +1,62 @@
+deployment:
+  name: "support-agent-v2.3"
+  project: "support-agent"
+
+  runtime:
+    mode: "direct"
+    direct:
+      provider: "openai"
+      api_key_env: "OPENAI_API_KEY"
+
+  baseline:
+    prompt: "support-agent@v2.2"
+    model: "gpt-4o-mini"
+
+  canary:
+    prompt: "support-agent@v2.3"
+    model: "gpt-4o-mini"
+
+  stages:
+    - weight: 5
+      duration: "5m"
+      min_samples: 20
+      gates:
+        - scorer: "Correctness"
+          threshold: 0.85
+          comparison: "not_worse_than_baseline"
+          confidence: 0.95
+
+    - weight: 25
+      duration: "10m"
+      min_samples: 100
+      gates:
+        - scorer: "Correctness"
+          threshold: 0.85
+          comparison: "not_worse_than_baseline"
+          confidence: 0.95
+
+    - weight: 50
+      duration: "15m"
+      min_samples: 300
+      gates:
+        - scorer: "Correctness"
+          threshold: 0.85
+
+    - weight: 100
+
+  rollback:
+    on_score_drop: 0.1
+    on_error_rate: 0.05
+    cooldown: "5m"
+
+  monitor:
+    poll_interval: "30s"
+    sticky_key: "metadata.user_id"
+    scorer_lag_grace: "2m"
+
+  notifications:
+    webhooks: []
+
+  server:
+    host: "127.0.0.1"
+    port: 4100

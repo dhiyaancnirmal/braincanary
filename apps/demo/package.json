@@ -1,0 +1,19 @@
+{
+  "name": "@braincanary/demo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b --pretty false",
+    "agent": "tsx src/agent.ts",
+    "simulate": "tsx src/simulate.ts",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "openai": "^5.23.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.5"
+  }
+}
